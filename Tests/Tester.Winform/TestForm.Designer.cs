@@ -38,6 +38,7 @@
             this.btnStartCapture = new System.Windows.Forms.ToolStripButton();
             this.btnStopScan = new System.Windows.Forms.ToolStripButton();
             this.btnSaveImage = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.panelOptions = new System.Windows.Forms.TableLayoutPanel();
             this.groupDuplex = new System.Windows.Forms.GroupBox();
             this.ckDuplex = new System.Windows.Forms.CheckBox();
@@ -62,7 +63,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(222, 25);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(580, 430);
+            this.pictureBox1.Size = new System.Drawing.Size(580, 395);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -79,7 +80,8 @@
             this.btnSources,
             this.btnStartCapture,
             this.btnStopScan,
-            this.btnSaveImage});
+            this.btnSaveImage,
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(802, 25);
@@ -95,19 +97,19 @@
             this.btnSources.Image = ((System.Drawing.Image)(resources.GetObject("btnSources.Image")));
             this.btnSources.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSources.Name = "btnSources";
-            this.btnSources.Size = new System.Drawing.Size(94, 22);
+            this.btnSources.Size = new System.Drawing.Size(100, 22);
             this.btnSources.Text = "Select &sources";
             this.btnSources.DropDownOpening += new System.EventHandler(this.btnSources_DropDownOpening);
             // 
             // sepSourceList
             // 
             this.sepSourceList.Name = "sepSourceList";
-            this.sepSourceList.Size = new System.Drawing.Size(168, 6);
+            this.sepSourceList.Size = new System.Drawing.Size(177, 6);
             // 
             // reloadSourcesListToolStripMenuItem
             // 
             this.reloadSourcesListToolStripMenuItem.Name = "reloadSourcesListToolStripMenuItem";
-            this.reloadSourcesListToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.reloadSourcesListToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reloadSourcesListToolStripMenuItem.Text = "&Reload sources list";
             this.reloadSourcesListToolStripMenuItem.Click += new System.EventHandler(this.reloadSourcesListToolStripMenuItem_Click);
             // 
@@ -118,7 +120,7 @@
             this.btnStartCapture.Image = ((System.Drawing.Image)(resources.GetObject("btnStartCapture.Image")));
             this.btnStartCapture.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStartCapture.Name = "btnStartCapture";
-            this.btnStartCapture.Size = new System.Drawing.Size(62, 22);
+            this.btnStartCapture.Size = new System.Drawing.Size(66, 22);
             this.btnStartCapture.Text = "S&tart scan";
             this.btnStartCapture.Click += new System.EventHandler(this.btnStartCapture_Click);
             // 
@@ -129,7 +131,7 @@
             this.btnStopScan.Image = ((System.Drawing.Image)(resources.GetObject("btnStopScan.Image")));
             this.btnStopScan.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnStopScan.Name = "btnStopScan";
-            this.btnStopScan.Size = new System.Drawing.Size(62, 22);
+            this.btnStopScan.Size = new System.Drawing.Size(67, 22);
             this.btnStopScan.Text = "Sto&p scan";
             this.btnStopScan.Click += new System.EventHandler(this.btnStopScan_Click);
             // 
@@ -139,9 +141,18 @@
             this.btnSaveImage.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveImage.Image")));
             this.btnSaveImage.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSaveImage.Name = "btnSaveImage";
-            this.btnSaveImage.Size = new System.Drawing.Size(71, 22);
+            this.btnSaveImage.Size = new System.Drawing.Size(78, 22);
             this.btnSaveImage.Text = "S&ave image";
             this.btnSaveImage.Click += new System.EventHandler(this.btnSaveImage_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
             // 
             // panelOptions
             // 
@@ -161,10 +172,10 @@
             this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.panelOptions.Size = new System.Drawing.Size(222, 430);
+            this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.panelOptions.Size = new System.Drawing.Size(222, 395);
             this.panelOptions.TabIndex = 3;
             // 
             // groupDuplex
@@ -172,10 +183,10 @@
             this.groupDuplex.Controls.Add(this.ckDuplex);
             this.groupDuplex.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupDuplex.Enabled = false;
-            this.groupDuplex.Location = new System.Drawing.Point(8, 203);
-            this.groupDuplex.Margin = new System.Windows.Forms.Padding(8);
+            this.groupDuplex.Location = new System.Drawing.Point(8, 187);
+            this.groupDuplex.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.groupDuplex.Name = "groupDuplex";
-            this.groupDuplex.Size = new System.Drawing.Size(206, 58);
+            this.groupDuplex.Size = new System.Drawing.Size(206, 54);
             this.groupDuplex.TabIndex = 6;
             this.groupDuplex.TabStop = false;
             this.groupDuplex.Text = "Duplex";
@@ -183,9 +194,9 @@
             // ckDuplex
             // 
             this.ckDuplex.AutoSize = true;
-            this.ckDuplex.Location = new System.Drawing.Point(18, 24);
+            this.ckDuplex.Location = new System.Drawing.Point(18, 22);
             this.ckDuplex.Name = "ckDuplex";
-            this.ckDuplex.Size = new System.Drawing.Size(65, 17);
+            this.ckDuplex.Size = new System.Drawing.Size(62, 16);
             this.ckDuplex.TabIndex = 0;
             this.ckDuplex.Text = "Enabled";
             this.ckDuplex.UseVisualStyleBackColor = true;
@@ -196,10 +207,10 @@
             this.groupSize.Controls.Add(this.comboSize);
             this.groupSize.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupSize.Enabled = false;
-            this.groupSize.Location = new System.Drawing.Point(8, 138);
-            this.groupSize.Margin = new System.Windows.Forms.Padding(8, 8, 8, 3);
+            this.groupSize.Location = new System.Drawing.Point(8, 127);
+            this.groupSize.Margin = new System.Windows.Forms.Padding(8, 7, 8, 3);
             this.groupSize.Name = "groupSize";
-            this.groupSize.Size = new System.Drawing.Size(206, 54);
+            this.groupSize.Size = new System.Drawing.Size(206, 50);
             this.groupSize.TabIndex = 5;
             this.groupSize.TabStop = false;
             this.groupSize.Text = "Size";
@@ -210,9 +221,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboSize.FormattingEnabled = true;
-            this.comboSize.Location = new System.Drawing.Point(18, 19);
+            this.comboSize.Location = new System.Drawing.Point(18, 18);
             this.comboSize.Name = "comboSize";
-            this.comboSize.Size = new System.Drawing.Size(169, 21);
+            this.comboSize.Size = new System.Drawing.Size(169, 20);
             this.comboSize.TabIndex = 0;
             this.comboSize.SelectedIndexChanged += new System.EventHandler(this.comboSize_SelectedIndexChanged);
             // 
@@ -221,10 +232,10 @@
             this.groupDepth.Controls.Add(this.comboDepth);
             this.groupDepth.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupDepth.Enabled = false;
-            this.groupDepth.Location = new System.Drawing.Point(8, 73);
-            this.groupDepth.Margin = new System.Windows.Forms.Padding(8, 8, 8, 3);
+            this.groupDepth.Location = new System.Drawing.Point(8, 67);
+            this.groupDepth.Margin = new System.Windows.Forms.Padding(8, 7, 8, 3);
             this.groupDepth.Name = "groupDepth";
-            this.groupDepth.Size = new System.Drawing.Size(206, 54);
+            this.groupDepth.Size = new System.Drawing.Size(206, 50);
             this.groupDepth.TabIndex = 4;
             this.groupDepth.TabStop = false;
             this.groupDepth.Text = "Depth";
@@ -235,9 +246,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboDepth.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboDepth.FormattingEnabled = true;
-            this.comboDepth.Location = new System.Drawing.Point(18, 19);
+            this.comboDepth.Location = new System.Drawing.Point(18, 18);
             this.comboDepth.Name = "comboDepth";
-            this.comboDepth.Size = new System.Drawing.Size(169, 21);
+            this.comboDepth.Size = new System.Drawing.Size(169, 20);
             this.comboDepth.TabIndex = 0;
             this.comboDepth.SelectedIndexChanged += new System.EventHandler(this.comboDepth_SelectedIndexChanged);
             // 
@@ -246,10 +257,10 @@
             this.groupDPI.Controls.Add(this.comboDPI);
             this.groupDPI.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupDPI.Enabled = false;
-            this.groupDPI.Location = new System.Drawing.Point(8, 8);
-            this.groupDPI.Margin = new System.Windows.Forms.Padding(8, 8, 8, 3);
+            this.groupDPI.Location = new System.Drawing.Point(8, 7);
+            this.groupDPI.Margin = new System.Windows.Forms.Padding(8, 7, 8, 3);
             this.groupDPI.Name = "groupDPI";
-            this.groupDPI.Size = new System.Drawing.Size(206, 54);
+            this.groupDPI.Size = new System.Drawing.Size(206, 50);
             this.groupDPI.TabIndex = 0;
             this.groupDPI.TabStop = false;
             this.groupDPI.Text = "DPI";
@@ -260,9 +271,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboDPI.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboDPI.FormattingEnabled = true;
-            this.comboDPI.Location = new System.Drawing.Point(18, 19);
+            this.comboDPI.Location = new System.Drawing.Point(18, 18);
             this.comboDPI.Name = "comboDPI";
-            this.comboDPI.Size = new System.Drawing.Size(169, 21);
+            this.comboDPI.Size = new System.Drawing.Size(169, 20);
             this.comboDPI.TabIndex = 0;
             this.comboDPI.SelectedIndexChanged += new System.EventHandler(this.comboDPI_SelectedIndexChanged);
             // 
@@ -270,9 +281,9 @@
             // 
             this.btnAllSettings.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnAllSettings.Enabled = false;
-            this.btnAllSettings.Location = new System.Drawing.Point(34, 312);
+            this.btnAllSettings.Location = new System.Drawing.Point(34, 287);
             this.btnAllSettings.Name = "btnAllSettings";
-            this.btnAllSettings.Size = new System.Drawing.Size(153, 23);
+            this.btnAllSettings.Size = new System.Drawing.Size(153, 21);
             this.btnAllSettings.TabIndex = 7;
             this.btnAllSettings.Text = "Open driver settings";
             this.btnAllSettings.UseVisualStyleBackColor = true;
@@ -280,14 +291,15 @@
             // 
             // TestForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 455);
+            this.ClientSize = new System.Drawing.Size(802, 420);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panelOptions);
             this.Controls.Add(this.toolStrip1);
             this.Name = "TestForm";
             this.Text = "Test Form";
+            this.Load += new System.EventHandler(this.TestForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -323,6 +335,7 @@
         private System.Windows.Forms.ToolStripButton btnSaveImage;
         private System.Windows.Forms.CheckBox ckDuplex;
         private System.Windows.Forms.Button btnAllSettings;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
 	}
 }
 

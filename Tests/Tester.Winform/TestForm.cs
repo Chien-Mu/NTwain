@@ -57,7 +57,10 @@ namespace Tester.Winform
 
         private void SetupTwain()
         {
+            //Source Manager 就是連接設備與PC的程式，而TWAIN 就是 Source Manager 的 interface #1-2
+            //appId 就是紀錄 Source Manager 通訊狀態的 struct
             var appId = TWIdentity.CreateFromAssembly(DataGroups.Image, Assembly.GetEntryAssembly());
+
             _twain = new TwainSession(appId);
             // either set this and don't worry about threads during events,
             // or don't and invoke during the events yourself
@@ -66,6 +69,8 @@ namespace Tester.Winform
             {
                 Debug.WriteLine("State changed to " + _twain.State + " on thread " + Thread.CurrentThread.ManagedThreadId);
             };
+
+            //轉入圖像
             _twain.DataTransferred += (s, e) =>
             {
                 Bitmap img = null;
@@ -105,7 +110,7 @@ namespace Tester.Winform
                 e.CancelAll = _stopScan;
             };
         }
-
+        // 清除  #3-11 State 表
         private void CleanupTwain()
         {
             if (_twain.State == 4)
@@ -128,9 +133,10 @@ namespace Tester.Winform
 
         #region toolbar
 
+        //他的用意是要按 btnSources 就讀 ReloadSourceList()
         private void btnSources_DropDownOpening(object sender, EventArgs e)
         {
-            if (btnSources.DropDownItems.Count == 2)
+            if (btnSources.DropDownItems.Count == 2) //這句好像沒意義，load初始就 count == 2了
             {
                 ReloadSourceList();
             }
@@ -144,22 +150,25 @@ namespace Tester.Winform
         void SourceMenuItem_Click(object sender, EventArgs e)
         {
             // do nothing if source is enabled
+            //已經到 state 5 啟動狀態，則許消此操作
             if (_twain.State > 4) { return; }
 
+            //到 state 4 還有救，關閉後即可
             if (_twain.State == 4) { _twain.CurrentSource.Close(); }
 
+            //每個項目都設定 checked == false
             foreach (var btn in btnSources.DropDownItems)
             {
                 var srcBtn = btn as ToolStripMenuItem;
                 if (srcBtn != null) { srcBtn.Checked = false; }
             }
 
-            var curBtn = (sender as ToolStripMenuItem);
+            var curBtn = (sender as ToolStripMenuItem); //拿到使用者案的 srcBtn
             var src = curBtn.Tag as TwainSource;
-            if (src.Open() == ReturnCode.Success)
+            if (src.Open() == ReturnCode.Success) //open source manager 且若回傳 Success
             {
                 curBtn.Checked = true;
-                btnStartCapture.Enabled = true;
+                btnStartCapture.Enabled = true; //start scan 按鈕
                 LoadSourceCaps();
             }
         }
@@ -169,11 +178,11 @@ namespace Tester.Winform
             if (_twain.State == 4)
             {
                 _stopScan = false;
-
+                //CapUIControllable 是否支援 UI disabled (這裡的UI 指的是 driver 附的較詳細的控制介面UI) #10-11
                 if (_twain.CurrentSource.SupportedCaps.Contains(CapabilityId.CapUIControllable))
                 {
-                    // hide scanner ui if possible
-                    if (_twain.CurrentSource.Enable(SourceEnableMode.NoUI, false, this.Handle) == ReturnCode.Success)
+                    // hide scanner ui if possible.  隱藏UI
+                    if (_twain.CurrentSource.Enable(SourceEnableMode.NoUI, false, this.Handle) == ReturnCode.Success) //這行就是執行了
                     {
                         btnStopScan.Enabled = true;
                         btnStartCapture.Enabled = false;
@@ -182,7 +191,7 @@ namespace Tester.Winform
                 }
                 else
                 {
-                    if (_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, this.Handle) == ReturnCode.Success)
+                    if (_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, this.Handle) == ReturnCode.Success) //如果沒支援，只好 SHOW UI
                     {
                         btnStopScan.Enabled = true;
                         btnStartCapture.Enabled = false;
@@ -238,7 +247,7 @@ namespace Tester.Winform
         {
             if (_twain == null)
             {
-                SetupTwain();
+                SetupTwain();  //只能建立一次， 所以加在 _twain == null 下
             }
             if (_twain.State < 3)
             {
@@ -250,17 +259,22 @@ namespace Tester.Winform
 
             if (_twain.State >= 3)
             {
+                //sepSourceList 就是 btnSourcse combobox 裡面那條線橫線，那條線index大於0，代表有撈到 source manager 資料    
+                //一開始btnSources.DropDownItems.IndexOf(sepSourceList) 就是 0，也就是 有 source manager 才執行
                 while (btnSources.DropDownItems.IndexOf(sepSourceList) > 0)
                 {
+                    //把 btnSources itme 都移除
                     var first = btnSources.DropDownItems[0];
                     first.Click -= SourceMenuItem_Click;
                     btnSources.DropDownItems.Remove(first);
                 }
-                foreach (var src in _twain.GetSources())
+
+                //開始安插 source manager
+                foreach (var src in _twain.GetSources()) //只能call 到 state >= 2 的 source manager (method上寫的
                 {
                     var srcBtn = new ToolStripMenuItem(src.Name);
-                    srcBtn.Tag = src;
-                    srcBtn.Click += SourceMenuItem_Click;
+                    srcBtn.Tag = src; //設定srcBtn 就是 source manager 的物件
+                    srcBtn.Click += SourceMenuItem_Click;  //delegate (這裡只是給 Method address，argument:sender、e 是 srcBtn.Click 內部去給的
                     srcBtn.Checked = _twain.CurrentSource != null && _twain.CurrentSource.Name == src.Name;
                     btnSources.DropDownItems.Insert(0, srcBtn);
                 }
@@ -273,7 +287,10 @@ namespace Tester.Winform
 
         private void LoadSourceCaps()
         {
-            var caps = _twain.CurrentSource.SupportedCaps;
+            var caps = _twain.CurrentSource.SupportedCaps; //GET 出 Capability 
+            // get 已 open 的 soruce manager,因為前面呼叫有 src.open()，CurrentSource 就是 正在使用的
+            // Capabilities 說明 #2-14
+            
             _loadingCaps = true;
             if (groupDepth.Enabled = caps.Contains(CapabilityId.ICapPixelType))
             {
@@ -293,6 +310,12 @@ namespace Tester.Winform
                 LoadPaperSize();
             }
             btnAllSettings.Enabled = caps.Contains(CapabilityId.CapEnableDSUIOnly);
+            
+            //ADF test #10-9 #10-61
+            if(caps.Contains(CapabilityId.CapFeederEnabled) && caps.Contains(CapabilityId.CapFeederPrep))
+            {
+                Console.WriteLine("有支援ADF");
+            }
             _loadingCaps = false;
         }
 
@@ -303,7 +326,7 @@ namespace Tester.Winform
             var cur = _twain.CurrentSource.CapGetCurrent(CapabilityId.ICapSupportedSizes).ConvertToEnum<SupportedSize>();
             if (list.Contains(cur))
             {
-                comboSize.SelectedItem = cur;
+                comboSize.SelectedItem = cur; //選取的項目 設定物件(這樣沒選的項目，不就沒有被設定到物件???)
             }
         }
 
@@ -337,6 +360,7 @@ namespace Tester.Winform
 
         private void comboSize_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //將選擇的item 物件載入 CurrentSource
             if (!_loadingCaps && _twain.State == 4)
             {
                 var sel = (SupportedSize)comboSize.SelectedItem;
@@ -376,6 +400,11 @@ namespace Tester.Winform
         }
 
         #endregion
+
+        private void TestForm_Load(object sender, EventArgs e)
+        {
+            Console.WriteLine(btnSources.DropDownItems.Count);
+        }
 
         #endregion
 
