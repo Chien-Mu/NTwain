@@ -191,7 +191,8 @@ namespace Tester.Winform
                 }
                 else
                 {
-                    if (_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, this.Handle) == ReturnCode.Success) //如果沒支援，只好 SHOW UI
+                    //_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, this.Handle) 原版程式，但要按alt+tab才能解除ui凍結
+                    if (_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, IntPtr.Zero) == ReturnCode.Success) //如果沒支援，只好 SHOW UI
                     {
                         btnStopScan.Enabled = true;
                         btnStartCapture.Enabled = false;
@@ -316,6 +317,8 @@ namespace Tester.Winform
             {
                 Console.WriteLine("有支援ADF");
             }
+            Console.WriteLine(caps.Contains(CapabilityId.CapFeederEnabled));
+            Console.WriteLine(caps.Contains(CapabilityId.CapFeederPrep));
             _loadingCaps = false;
         }
 

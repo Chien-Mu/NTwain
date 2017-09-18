@@ -154,7 +154,7 @@ namespace NTwain
                 }
                 else
                 {
-                    rc = ((ITwainSessionInternal)this).DGControl.UserInterface.EnableDS(_twui);
+                    rc = ((ITwainSessionInternal)this).DGControl.UserInterface.EnableDS(_twui); //這裡會lag
                 }
 
                 if (rc != ReturnCode.Success)
