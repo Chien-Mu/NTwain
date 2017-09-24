@@ -14,10 +14,10 @@ namespace Tester.Winform
 {
     sealed partial class TestForm : Form
     {
-        ImageCodecInfo _tiffCodecInfo;
+        ImageCodecInfo _tiffCodecInfo; //儲存影像編碼格式
         TwainSession _twain;
         bool _stopScan;
-        bool _loadingCaps;
+        bool _loadingCaps; //是否正在載入 caps
 
 
         #region setup & cleanup
@@ -33,9 +33,9 @@ namespace Tester.Winform
             {
                 Text = Text + " (32bit)";
             }
-            foreach (var enc in ImageCodecInfo.GetImageEncoders())
+            foreach (var enc in ImageCodecInfo.GetImageEncoders()) //get 出 OS 支援的影像格式
             {
-                if (enc.MimeType == "image/tiff") { _tiffCodecInfo = enc; break; }
+                if (enc.MimeType == "image/tiff") { _tiffCodecInfo = enc; break; } //如果有支援 "image/tiff" 則儲存
             }
         }
 
@@ -95,6 +95,7 @@ namespace Tester.Winform
                     }));
                 }
             };
+            //這個event 只有全部都讀取完，才會執行
             _twain.SourceDisabled += (s, e) =>
             {
                 this.BeginInvoke(new Action(() =>
@@ -102,7 +103,7 @@ namespace Tester.Winform
                     btnStopScan.Enabled = false;
                     btnStartCapture.Enabled = true;
                     panelOptions.Enabled = true;
-                    LoadSourceCaps();
+                    LoadSourceCaps(); //為什麼每次scan結束 都要重新查看能力? //這段就算註解掉，也都正常
                 }));
             };
             _twain.TransferReady += (s, e) =>
@@ -136,7 +137,8 @@ namespace Tester.Winform
         //他的用意是要按 btnSources 就讀 ReloadSourceList()
         private void btnSources_DropDownOpening(object sender, EventArgs e)
         {
-            if (btnSources.DropDownItems.Count == 2) //這句好像沒意義，load初始就 count == 2了
+            //load初始就 count == 2了，意義在於，若一直都沒抓到 source，則每次按btnSources都要讀ReloadSourceList()
+            if (btnSources.DropDownItems.Count == 2) 
             {
                 ReloadSourceList();
             }
@@ -178,6 +180,7 @@ namespace Tester.Winform
             if (_twain.State == 4)
             {
                 _stopScan = false;
+                //_twain.CurrentSource.Enable(SourceEnableMode.ShowUI, true, IntPtr.Zero);
                 //CapUIControllable 是否支援 UI disabled (這裡的UI 指的是 driver 附的較詳細的控制介面UI) #10-11
                 if (_twain.CurrentSource.SupportedCaps.Contains(CapabilityId.CapUIControllable))
                 {
@@ -288,10 +291,23 @@ namespace Tester.Winform
 
         private void LoadSourceCaps()
         {
+            // Capabilities 說明 #2-14
+            //_twain.CurrentSource.CapSetFeeder(bool); 
+            //false = HP 會改成玻璃平面掃描，不管上面有沒有紙都會無視
+            //true = 限制用上面來掃，就算上面沒紙也不會掃下中間玻璃
+            //如果不去設定，則會去自動判斷，會以上面為主，上面沒紙才會掃描中間玻璃，
+            //需要再select才會重新來，因為只有第一次會自動判斷，不然可能第一次掃中間，後面就一直會用中間去掃
+            
+            //也就是 ADF 開，需要設定 true
+            //ADF 關，不要設定，但使用完一定要結束
+            
+            //_twain.CurrentSource.SupportedCaps.Remove(CapabilityId.CapFeederEnabled); //無法
+            //var adf = _twain.CurrentSource.CapGetCurrent(CapabilityId.CapFeederEnabled).ConvertToEnum<bool>();
+            //adf = false;  //無法
+
             var caps = _twain.CurrentSource.SupportedCaps; //GET 出 Capability 
             // get 已 open 的 soruce manager,因為前面呼叫有 src.open()，CurrentSource 就是 正在使用的
-            // Capabilities 說明 #2-14
-            
+
             _loadingCaps = true;
             if (groupDepth.Enabled = caps.Contains(CapabilityId.ICapPixelType))
             {
@@ -317,19 +333,23 @@ namespace Tester.Winform
             {
                 Console.WriteLine("有支援ADF");
             }
-            Console.WriteLine(caps.Contains(CapabilityId.CapFeederEnabled));
-            Console.WriteLine(caps.Contains(CapabilityId.CapFeederPrep));
+            Console.WriteLine(caps.Contains(CapabilityId.CapFeederEnabled)); //true
+            Console.WriteLine(caps.Contains(CapabilityId.CapFeederPrep)); //false
             _loadingCaps = false;
         }
 
         private void LoadPaperSize()
         {
+            //把 SupportedSize 型態各狀態，都丟到 ComboBox
             var list = _twain.CurrentSource.CapGetSupportedSizes();
-            comboSize.DataSource = list;
+            comboSize.DataSource = list; //因為是用 <T> 方式丟，所以才能有 String 與 Value(SupportedSize)
+
+            //下面這段，是為了回復上一次的掃描選項，因為結束後，這邊程式都會再呼叫一次 LoadSourceCaps()
+            //重新呼叫後，上面 comboSize.DataSource = list; 就會 default 了
             var cur = _twain.CurrentSource.CapGetCurrent(CapabilityId.ICapSupportedSizes).ConvertToEnum<SupportedSize>();
             if (list.Contains(cur))
             {
-                comboSize.SelectedItem = cur; //選取的項目 設定物件(這樣沒選的項目，不就沒有被設定到物件???)
+                comboSize.SelectedItem = cur; //這會去搜尋 與 cur 對應的 Item(跟 FindItme 一樣)
             }
         }
 
@@ -342,7 +362,7 @@ namespace Tester.Winform
         {
             // only allow dpi of certain values for those source that lists everything
             var list = _twain.CurrentSource.CapGetDPIs().Where(dpi => (dpi % 50) == 0).ToList();
-            comboDPI.DataSource = list;
+            comboDPI.DataSource = list;        
             var cur = (TWFix32)_twain.CurrentSource.CapGetCurrent(CapabilityId.ICapXResolution);
             if (list.Contains(cur))
             {
@@ -377,7 +397,14 @@ namespace Tester.Winform
             {
                 var sel = (PixelType)comboDepth.SelectedItem;
                 _twain.CurrentSource.CapSetPixelType(sel);
+
+                //也可這樣設定
+                //上面 CapSetPixelType() 是做出來的捷徑，若沒有做捷徑出來就要像下面這樣設定。
+                //var cur = _twain.CurrentSource.CapGetCurrent(CapabilityId.ICapPixelType).ConvertToEnum<PixelType>();
+                //cur = sel;
+                //或者 cur = PixelType.BlackWhite; 固定狀態
             }
+
         }
 
         private void comboDPI_SelectedIndexChanged(object sender, EventArgs e)
@@ -406,7 +433,7 @@ namespace Tester.Winform
 
         private void TestForm_Load(object sender, EventArgs e)
         {
-            Console.WriteLine(btnSources.DropDownItems.Count);
+            
         }
 
         #endregion

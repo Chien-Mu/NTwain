@@ -49,6 +49,8 @@
             this.groupDPI = new System.Windows.Forms.GroupBox();
             this.comboDPI = new System.Windows.Forms.ComboBox();
             this.btnAllSettings = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.panelOptions.SuspendLayout();
@@ -61,9 +63,9 @@
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(222, 25);
+            this.pictureBox1.Location = new System.Drawing.Point(222, 49);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(580, 395);
+            this.pictureBox1.Size = new System.Drawing.Size(580, 371);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -81,8 +83,9 @@
             this.btnStartCapture,
             this.btnStopScan,
             this.btnSaveImage,
-            this.toolStripButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStripButton1,
+            this.toolStripButton2});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(802, 25);
             this.toolStrip1.TabIndex = 2;
@@ -165,7 +168,7 @@
             this.panelOptions.Controls.Add(this.groupDPI, 0, 0);
             this.panelOptions.Controls.Add(this.btnAllSettings, 0, 6);
             this.panelOptions.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panelOptions.Location = new System.Drawing.Point(0, 25);
+            this.panelOptions.Location = new System.Drawing.Point(0, 49);
             this.panelOptions.Name = "panelOptions";
             this.panelOptions.RowCount = 7;
             this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -175,7 +178,7 @@
             this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
             this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
             this.panelOptions.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
-            this.panelOptions.Size = new System.Drawing.Size(222, 395);
+            this.panelOptions.Size = new System.Drawing.Size(222, 371);
             this.panelOptions.TabIndex = 3;
             // 
             // groupDuplex
@@ -289,6 +292,23 @@
             this.btnAllSettings.UseVisualStyleBackColor = true;
             this.btnAllSettings.Click += new System.EventHandler(this.btnAllSettings_Click);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(802, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "toolStripButton2";
+            // 
             // TestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -297,6 +317,8 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panelOptions);
             this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "TestForm";
             this.Text = "Test Form";
             this.Load += new System.EventHandler(this.TestForm_Load);
@@ -336,6 +358,8 @@
         private System.Windows.Forms.CheckBox ckDuplex;
         private System.Windows.Forms.Button btnAllSettings;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
 	}
 }
 
