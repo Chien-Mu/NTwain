@@ -84,7 +84,7 @@ namespace Tester.Winform
                 }
                 if (img != null)
                 {
-                    this.BeginInvoke(new Action(() =>
+                    this.Invoke(new Action(() =>
                     {
                         if (pictureBox1.Image != null)
                         {
@@ -150,7 +150,7 @@ namespace Tester.Winform
         }
 
         void SourceMenuItem_Click(object sender, EventArgs e)
-        {
+        {            
             // do nothing if source is enabled
             //已經到 state 5 啟動狀態，則許消此操作
             if (_twain.State > 4) { return; }
@@ -333,8 +333,29 @@ namespace Tester.Winform
             {
                 Console.WriteLine("有支援ADF");
             }
-            Console.WriteLine(caps.Contains(CapabilityId.CapFeederEnabled)); //true
-            Console.WriteLine(caps.Contains(CapabilityId.CapFeederPrep)); //false
+
+            //像 CapSetPixelType() 就是捷徑
+            //下面CapGetCurrent 只能讀，寫入是無效的
+            //而 var cur = _twain.CurrentSource.CapGetCurrent(CapabilityId.ICapPixelType).ConvertToEnum<PixelType>();            
+            //cur = sel;
+            //Console.WriteLine(_twain.CurrentSource.CapGetCurrent(CapabilityId.ICapPixelType)); //無改變
+
+            //CapXferCount 限制一次掃描幾張
+            //在hp 時可以發揮 自動描，但每次掃描完就會觸發 DataTransferred 給圖
+            //在 UF6300 時，因為原本就是，上面hp說的功能，如果設定 CapXferCount，就會變成以會掃一張，其餘的都會自動退紙(不會有圖近來)
+            //設定 CapXferCount 能力(CapXferCount 在 CurrentSource 沒有做出捷徑，所以要自己做)
+            //3-18
+            //https://bitbucket.org/soukoku/ntwain/issues/21/stop-acquisition-immediately            
+            int myCount = -1; //-1 預設值
+            using (TWCapability cap = new TWCapability(CapabilityId.CapXferCount, new TWOneValue
+            {
+                Item = myCount > 0 ? (uint)myCount : uint.MaxValue,
+                ItemType = ItemType.UInt16
+            }))
+            {                
+                _twain.CurrentSource.DGControl.Capability.Set(cap); //DGControl 就是原 TAWIN 用的控制功能
+            }          
+
             _loadingCaps = false;
         }
 
